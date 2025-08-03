@@ -38,7 +38,7 @@
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             margin: 20px auto;
-            max-width: 1200px;
+            max-width: 1400px;
         }
 
         .header-section {
@@ -94,13 +94,16 @@
             color: white;
             font-weight: 600;
             border: none;
-            padding: 15px 10px;
+            padding: 12px 8px;
+            font-size: 14px;
         }
 
         .table td {
-            padding: 12px 10px;
+            padding: 8px;
             vertical-align: middle;
             border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+            line-height: 1.3;
         }
 
         .table tbody tr:hover {
@@ -180,11 +183,12 @@
 
         .money-type-tag {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
             font-weight: 500;
             color: white;
+            line-height: 1.2;
         }
 
         .type-teaching { background: #007bff; }
@@ -378,15 +382,15 @@
                         <table class="table table-hover mb-0">
                             <thead>
                                 <tr>
-                                    <th width="8%">ลำดับ</th>
-                                    <th width="10%">ประเภทเอกสาร</th>
-                                    <th width="8%">ปีงบประมาณ</th>
-                                    <th width="15%">ประเภทเงิน</th>
+                                    <th width="5%">ลำดับ</th>
+                                    <th width="8%">ประเภทเอกสาร</th>
+                                    <th width="7%">ปีงบประมาณ</th>
+                                    <th width="18%">ประเภทเงิน</th>
                                     <th width="12%">เลขที่เอกสาร</th>
-                                    <th width="20%">รายการ</th>
-                                    <th width="12%">จำนวนเงิน</th>
-                                    <th width="10%">วันที่</th>
-                                    <th width="15%">จัดการ</th>
+                                    <th width="25%">รายการ</th>
+                                    <th width="10%">จำนวนเงิน</th>
+                                    <th width="8%">วันที่</th>
+                                    <th width="7%">จัดการ</th>
                                 </tr>
                             </thead>
                             <tbody id="dataTableBody">
@@ -611,14 +615,14 @@
                     </td>
                     <td>${formatDate(record.recordDate)}</td>
                     <td>
-                        <button class="btn btn-info btn-sm me-1 rounded-pill" onclick="viewRecord('${record.id}')" title="ดูรายละเอียด">
-                            <img src="https://lh3.googleusercontent.com/d/13qxaLbH33ivpbfIfrBmylnxINq1oOLFl" width="16" height="16" alt="ดู">
+                        <button class="btn btn-info btn-sm me-1" onclick="viewRecord('${record.id}')" title="ดูรายละเอียด" style="padding: 4px 8px;">
+                            <img src="https://lh3.googleusercontent.com/d/13qxaLbH33ivpbfIfrBmylnxINq1oOLFl" width="14" height="14" alt="ดู">
                         </button>
-                        <button class="btn btn-warning btn-sm me-1 rounded-pill" onclick="editRecord('${record.id}')" title="แก้ไข">
-                            <img src="https://lh3.googleusercontent.com/d/1J08fhv8_Lqe1O1YY4nQTSl-0WKNo3FnU" width="16" height="16" alt="แก้ไข">
+                        <button class="btn btn-warning btn-sm me-1" onclick="editRecord('${record.id}')" title="แก้ไข" style="padding: 4px 8px;">
+                            <img src="https://lh3.googleusercontent.com/d/1J08fhv8_Lqe1O1YY4nQTSl-0WKNo3FnU" width="14" height="14" alt="แก้ไข">
                         </button>
-                        <button class="btn btn-danger btn-sm rounded-pill" onclick="deleteRecord('${record.id}')" title="ลบ">
-                            <img src="https://lh3.googleusercontent.com/d/1CE-tDsLaAhEd3TGz877i7N3AIiYRjDlq" width="16" height="16" alt="ลบ">
+                        <button class="btn btn-danger btn-sm" onclick="deleteRecord('${record.id}')" title="ลบ" style="padding: 4px 8px;">
+                            <img src="https://lh3.googleusercontent.com/d/1CE-tDsLaAhEd3TGz877i7N3AIiYRjDlq" width="14" height="14" alt="ลบ">
                         </button>
                     </td>
                 `;
@@ -1065,5 +1069,5 @@
             });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96973f4f172237d6',t:'MTc1NDIzOTEyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96974ce2b2f3798f',t:'MTc1NDIzOTY4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
