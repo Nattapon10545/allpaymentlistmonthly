@@ -3,313 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบบันทึกรายการเบิกจ่าย - โรงเรียนบ้านกิ่วพร้าว</title>
+    <title>ระบบบันทึกรายงานการเงิน - โรงเรียนบ้านกิ่วพร้าว</title>
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- SheetJS for Excel Export -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
     <style>
         :root {
-            --primary-color: #1134A6;
-            --primary-light: #e8f0ff;
-            --success-color: #28a745;
-            --danger-color: #dc3545;
-            --warning-color: #ffc107;
-            --info-color: #17a2b8;
+            --primary-orange: #FFB366;
+            --secondary-orange: #FF9A3D;
+            --light-orange: #FFF2E6;
+            --dark-orange: #E6935C;
         }
-
+        
         body {
             font-family: 'Sarabun', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #FFF2E6 0%, #FFE6CC 100%);
             min-height: 100vh;
         }
-
-        .main-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            margin: 20px auto;
-            max-width: 1400px;
-        }
-
-        .header-section {
-            background: linear-gradient(135deg, var(--primary-color), #2d5aa0);
-            color: white;
-            padding: 30px;
-            border-radius: 20px 20px 0 0;
-            text-align: center;
-        }
-
-        .school-logo {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 4px solid white;
-            margin-bottom: 15px;
-        }
-
-        .system-title {
+        
+        .header-title {
             font-family: 'Kanit', sans-serif;
-            font-size: 2.2rem;
+            color: var(--secondary-orange);
             font-weight: 600;
-            margin: 0;
         }
-
-        .school-name {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            margin-top: 5px;
-        }
-
-        .content-section {
-            padding: 30px;
-        }
-
-        .filter-section {
+        
+        .card-custom {
             background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-        }
-
-        .data-table {
-            background: white;
-            border-radius: 15px;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(255, 154, 61, 0.1);
+            border: none;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
         }
-
-        .table th {
-            background: var(--primary-color);
-            color: white;
-            font-weight: 600;
+        
+        .btn-primary-custom {
+            background: linear-gradient(45deg, var(--primary-orange), var(--secondary-orange));
             border: none;
-            padding: 12px 8px;
-            font-size: 14px;
-        }
-
-        .table td {
-            padding: 8px;
-            vertical-align: middle;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 14px;
-            line-height: 1.3;
-        }
-
-        .table tbody tr:hover {
-            background-color: #f8f9ff;
-        }
-
-        .btn-primary {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
+            border-radius: 0.5rem;
             font-weight: 500;
-            padding: 10px 20px;
-            border-radius: 10px;
+            transition: all 0.3s ease;
         }
-
-        .btn-primary:hover {
-            background: #0d2d8f;
-            border-color: #0d2d8f;
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 154, 61, 0.3);
         }
-
-        .btn-success {
-            background: var(--success-color);
-            border-color: var(--success-color);
-            border-radius: 8px;
-            padding: 8px 15px;
+        
+        .table-custom {
+            border-radius: 0.5rem;
+            overflow: hidden;
         }
-
-        .btn-warning {
-            background: var(--warning-color);
-            border-color: var(--warning-color);
-            border-radius: 8px;
-            padding: 8px 15px;
-        }
-
-        .btn-danger {
-            background: var(--danger-color);
-            border-color: var(--danger-color);
-            border-radius: 8px;
-            padding: 8px 15px;
-        }
-
-        .btn-info {
-            background: var(--info-color);
-            border-color: var(--info-color);
-            border-radius: 8px;
-            padding: 8px 15px;
-        }
-
-        .modal-content {
-            border-radius: 15px;
-            border: none;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .modal-header {
-            background: var(--primary-color);
+        
+        .table-custom thead {
+            background: linear-gradient(45deg, var(--primary-orange), var(--secondary-orange));
             color: white;
-            border-radius: 15px 15px 0 0;
-            padding: 20px 25px;
         }
-
-        .modal-title {
-            font-family: 'Kanit', sans-serif;
-            font-weight: 600;
+        
+        .badge-money-type {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 1rem;
         }
-
-        .form-control, .form-select {
-            border-radius: 10px;
-            border: 2px solid #e9ecef;
-            padding: 12px 15px;
-            font-size: 14px;
-        }
-
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(17, 52, 166, 0.25);
-        }
-
-        .money-type-tag {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 500;
-            color: white;
-            line-height: 1.2;
-        }
-
-        .type-teaching { background: #007bff; }
-        .type-books { background: #28a745; }
-        .type-equipment { background: #ffc107; color: #000; }
-        .type-uniform { background: #dc3545; }
-        .type-activity { background: #6f42c1; }
-        .type-basic { background: #fd7e14; }
-        .type-lunch { background: #20c997; }
-        .type-income { background: #6c757d; }
-        .type-fund { background: #e83e8c; }
-        .type-tax { background: #17a2b8; }
-        .type-interest { background: #343a40; }
-
-        .amount-income {
-            color: var(--success-color);
-            font-weight: 600;
-        }
-
-        .amount-expense {
-            color: var(--danger-color);
-            font-weight: 600;
-        }
-
+        
         .loading-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(255, 255, 255, 0.9);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 9999;
         }
-
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid var(--primary-color);
+        
+        .spinner-custom {
+            width: 3rem;
+            height: 3rem;
+            border: 0.3rem solid var(--light-orange);
+            border-top: 0.3rem solid var(--secondary-orange);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        .pagination {
-            justify-content: center;
-            margin-top: 20px;
+        
+        .modal-custom .modal-content {
+            border-radius: 1rem;
+            border: none;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
-
-        .page-link {
-            color: var(--primary-color);
-            border-radius: 8px;
-            margin: 0 2px;
-            border: 1px solid #dee2e6;
-        }
-
-        .page-link:hover {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
+        
+        .modal-custom .modal-header {
+            background: linear-gradient(45deg, var(--primary-orange), var(--secondary-orange));
             color: white;
+            border-radius: 1rem 1rem 0 0;
         }
-
-        .page-item.active .page-link {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
+        
+        .form-control:focus {
+            border-color: var(--secondary-orange);
+            box-shadow: 0 0 0 0.2rem rgba(255, 154, 61, 0.25);
         }
-
+        
+        .pagination .page-link {
+            color: var(--secondary-orange);
+            border-color: var(--primary-orange);
+        }
+        
+        .pagination .page-item.active .page-link {
+            background-color: var(--secondary-orange);
+            border-color: var(--secondary-orange);
+        }
+        
+        .school-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+        }
+        
         @media (max-width: 768px) {
-            .system-title {
-                font-size: 1.8rem;
-            }
-            
-            .school-logo {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .content-section {
-                padding: 20px 15px;
-            }
-            
             .table-responsive {
-                font-size: 14px;
+                font-size: 0.875rem;
             }
             
-            .btn {
-                padding: 6px 12px;
-                font-size: 12px;
+            .btn-sm-mobile {
+                font-size: 0.75rem;
+                padding: 0.25rem 0.5rem;
+            }
+            
+            .table-custom th,
+            .table-custom td {
+                padding: 0.5rem 0.25rem;
+                vertical-align: middle;
+            }
+            
+            .table-custom td:nth-child(7) {
+                max-width: 150px;
             }
         }
+        
+        .table-custom {
+            table-layout: fixed;
+            width: 100%;
+        }
+        
+        .table-custom th:nth-child(1) { width: 12%; }
+        .table-custom th:nth-child(2) { width: 10%; }
+        .table-custom th:nth-child(3) { width: 12%; }
+        .table-custom th:nth-child(4) { width: 8%; }
+        .table-custom th:nth-child(5) { width: 15%; }
+        .table-custom th:nth-child(6) { width: 8%; }
+        .table-custom th:nth-child(7) { width: 15%; }
+        .table-custom th:nth-child(8) { width: 12%; }
+        .table-custom th:nth-child(9) { width: 8%; }
     </style>
 </head>
 <body>
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-spinner"></div>
+        <div class="text-center">
+            <div class="spinner-custom"></div>
+            <div class="mt-3 text-muted">กำลังประมวลผล...</div>
+        </div>
     </div>
 
-    <div class="container-fluid">
-        <div class="main-container">
-            <!-- Header Section -->
-            <div class="header-section">
-                <img src="https://lh3.googleusercontent.com/d/1vQtWxoqhL4BWuOmDehWMGTqoRh63AThV" alt="โรงเรียนบ้านกิ่วพร้าว" class="school-logo">
-                <h1 class="system-title">ระบบบันทึกรายการเบิกจ่าย</h1>
-                <p class="school-name">โรงเรียนบ้านกิ่วพร้าว</p>
+    <div class="container-fluid py-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <img src="https://lh3.googleusercontent.com/d/1vQtWxoqhL4BWuOmDehWMGTqoRh63AThV" alt="โรงเรียนบ้านกิ่วพร้าว" class="school-logo mb-3">
+                <h1 class="header-title mb-2">ระบบบันทึกรายงานการเงิน</h1>
+                <h4 class="text-muted">โรงเรียนบ้านกิ่วพร้าว</h4>
             </div>
+        </div>
 
-            <!-- Content Section -->
-            <div class="content-section">
-                <!-- Filter Section -->
-                <div class="filter-section">
-                    <div class="row align-items-end">
-                        <div class="col-md-2 mb-3">
-                            <label class="form-label fw-bold">เดือน</label>
+        <!-- Main Content -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-custom">
+                    <div class="card-body p-4">
+                        <!-- Filters and Controls -->
+                        <div class="row mb-4">
+                        <div class="col-md-3 mb-2">
+                            <label class="form-label">เดือน</label>
                             <select class="form-select" id="monthFilter">
                                 <option value="">ทุกเดือน</option>
                                 <option value="1">มกราคม</option>
@@ -326,8 +212,8 @@
                                 <option value="12">ธันวาคม</option>
                             </select>
                         </div>
-                        <div class="col-md-2 mb-3">
-                            <label class="form-label fw-bold">ปี</label>
+                        <div class="col-md-3 mb-2">
+                            <label class="form-label">ปี</label>
                             <select class="form-select" id="yearFilter">
                                 <option value="">ทุกปี</option>
                                 <option value="2568">2568</option>
@@ -335,123 +221,10 @@
                                 <option value="2570">2570</option>
                             </select>
                         </div>
-                        <div class="col-md-2 mb-3">
-                            <button class="btn btn-primary rounded-pill px-4" onclick="filterData()">
-                                <i class="fas fa-search me-2"></i>ค้นหา
-                            </button>
-                        </div>
-                        <div class="col-md-2 mb-3">
-                            <label class="form-label fw-bold">Export เดือน</label>
-                            <select class="form-select" id="exportMonthFilter">
-                                <option value="">เลือกเดือน</option>
-                                <option value="1">มกราคม</option>
-                                <option value="2">กุมภาพันธ์</option>
-                                <option value="3">มีนาคม</option>
-                                <option value="4">เมษายน</option>
-                                <option value="5">พฤษภาคม</option>
-                                <option value="6">มิถุนายน</option>
-                                <option value="7">กรกฎาคม</option>
-                                <option value="8">สิงหาคม</option>
-                                <option value="9">กันยายน</option>
-                                <option value="10">ตุลาคม</option>
-                                <option value="11">พฤศจิกายน</option>
-                                <option value="12">ธันวาคม</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2 mb-3">
-                            <button class="btn btn-info rounded-pill px-4" onclick="exportToExcel()">
-                                <i class="fas fa-file-excel me-2"></i>Export Excel
-                            </button>
-                        </div>
-                        <div class="col-md-2 mb-3 text-end">
-                            <div class="btn-group" role="group">
-                                <button class="btn btn-success rounded-pill me-2" onclick="openAddModal('income')">
-                                    <i class="fas fa-plus me-2"></i>รายการรับ
-                                </button>
-                                <button class="btn btn-danger rounded-pill" onclick="openAddModal('expense')">
-                                    <i class="fas fa-plus me-2"></i>รายการจ่าย
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Data Table -->
-                <div class="data-table">
-                    <div class="table-responsive">
-                        <table class="table table-hover mb-0">
-                            <thead>
-                                <tr>
-                                    <th width="5%">ลำดับ</th>
-                                    <th width="8%">ประเภทเอกสาร</th>
-                                    <th width="7%">ปีงบประมาณ</th>
-                                    <th width="18%">ประเภทเงิน</th>
-                                    <th width="12%">เลขที่เอกสาร</th>
-                                    <th width="25%">รายการ</th>
-                                    <th width="10%">จำนวนเงิน</th>
-                                    <th width="8%">วันที่</th>
-                                    <th width="7%">จัดการ</th>
-                                </tr>
-                            </thead>
-                            <tbody id="dataTableBody">
-                                <!-- Data will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <!-- Pagination -->
-                    <nav aria-label="Page navigation" class="p-3">
-                        <ul class="pagination" id="pagination">
-                            <!-- Pagination will be generated here -->
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add/Edit Modal -->
-    <div class="modal fade" id="addEditModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">เพิ่มรายการใหม่</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="dataForm">
-                        <input type="hidden" id="recordId">
-                        <input type="hidden" id="recordType">
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">ประเภทเอกสาร <span class="text-danger">*</span></label>
-                                <select class="form-select" id="documentType" required>
-                                    <option value="">เลือกประเภทเอกสาร</option>
-                                    <option value="บค.">บค.</option>
-                                    <option value="บจ.">บจ.</option>
-                                    <option value="บร.">บร.</option>
-                                    <option value="บก.">บก.</option>
-                                    <option value="บย.">บย.</option>
-                                    <option value="บถ.">บถ.</option>
-                                    <option value="บฝ.">บฝ.</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">ปีงบประมาณ <span class="text-danger">*</span></label>
-                                <select class="form-select" id="budgetYear" required>
-                                    <option value="">เลือกปีงบประมาณ</option>
-                                    <option value="2568">2568</option>
-                                    <option value="2569">2569</option>
-                                    <option value="2570">2570</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">ประเภทเงิน <span class="text-danger">*</span></label>
-                            <select class="form-select" id="moneyType" required>
-                                <option value="">เลือกประเภทเงิน</option>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">ประเภทเงิน</label>
+                            <select class="form-select" id="moneyTypeFilter">
+                                <option value="">ทุกประเภท</option>
                                 <option value="ค่าจัดการเรียนการสอน">ค่าจัดการเรียนการสอน</option>
                                 <option value="ค่าหนังสือเรียน">ค่าหนังสือเรียน</option>
                                 <option value="ค่าอุปกรณ์การเรียน">ค่าอุปกรณ์การเรียน</option>
@@ -465,47 +238,166 @@
                                 <option value="ดอกเบี้ย">ดอกเบี้ย</option>
                             </select>
                         </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">เลขที่เอกสาร <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="documentNumber" required>
+                        <div class="col-md-2 mb-2 d-flex align-items-end">
+                            <div class="btn-group w-100" role="group">
+                                <button class="btn btn-primary-custom" onclick="addRecord()">
+                                    <i class="fas fa-plus me-1"></i>เพิ่ม
+                                </button>
+                                <button class="btn btn-success" onclick="exportToExcel()" title="ส่งออกข้อมูล Excel">
+                                    <i class="fas fa-file-excel"></i>
+                                </button>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">วันที่ <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="recordDate" required>
-                            </div>
                         </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">รายการ <span class="text-danger">*</span></label>
-                            <textarea class="form-control" id="description" rows="3" required></textarea>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">จำนวนเงิน <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" id="amount" step="0.01" min="0" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                    <button type="button" class="btn btn-primary" onclick="saveRecord()">บันทึก</button>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="table-responsive">
+                        <table class="table table-custom table-hover">
+                            <thead>
+                                <tr>
+                                    <th>วันที่</th>
+                                    <th>ประเภทเอกสาร</th>
+                                    <th>เลขที่เอกสาร</th>
+                                    <th>ปีงบประมาณ</th>
+                                    <th>ประเภทเงิน</th>
+                                    <th>ประเภทรายการ</th>
+                                    <th>รายการ</th>
+                                    <th>จำนวนเงิน</th>
+                                    <th>จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recordsTable">
+                                <!-- Data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center" id="pagination">
+                            <!-- Pagination will be populated here -->
+                        </ul>
+                    </nav>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- View Details Modal -->
-    <div class="modal fade" id="viewModal" tabindex="-1" aria-hidden="true">
+    <!-- Add/Edit Record Modal -->
+    <div class="modal fade modal-custom" id="recordModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">รายละเอียดข้อมูล</h5>
+                    <h5 class="modal-title" id="modalTitle">เพิ่มรายการใหม่</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="recordForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">วันที่ <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="recordDate" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">ประเภทเอกสาร <span class="text-danger">*</span></label>
+                                <select class="form-select" id="documentType" required>
+                                    <option value="">เลือกประเภทเอกสาร</option>
+                                    <option value="บค.">บค.</option>
+                                    <option value="บจ.">บจ.</option>
+                                    <option value="บร.">บร.</option>
+                                    <option value="บก.">บก.</option>
+                                    <option value="บย.">บย.</option>
+                                    <option value="บถ.">บถ.</option>
+                                    <option value="บฝ.">บฝ.</option>
+                                    <option value="อื่นๆ">อื่นๆ</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">ประเภทเอกสารอื่นๆ</label>
+                                <input type="text" class="form-control" id="customDocumentType" style="display: none;">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">เลขที่เอกสาร <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="documentNumber" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">ปีงบประมาณ <span class="text-danger">*</span></label>
+                                <select class="form-select" id="budgetYear" required>
+                                    <option value="">เลือกปีงบประมาณ</option>
+                                    <option value="2568">2568</option>
+                                    <option value="2569">2569</option>
+                                    <option value="2570">2570</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">ประเภทเงิน <span class="text-danger">*</span></label>
+                                <select class="form-select" id="moneyType" required>
+                                    <option value="">เลือกประเภทเงิน</option>
+                                    <option value="ค่าจัดการเรียนการสอน">ค่าจัดการเรียนการสอน</option>
+                                    <option value="ค่าหนังสือเรียน">ค่าหนังสือเรียน</option>
+                                    <option value="ค่าอุปกรณ์การเรียน">ค่าอุปกรณ์การเรียน</option>
+                                    <option value="ค่าเครื่องแบบนักเรียน">ค่าเครื่องแบบนักเรียน</option>
+                                    <option value="ค่ากิจกรรมพัฒนาคุณภาพผู้เรียน">ค่ากิจกรรมพัฒนาคุณภาพผู้เรียน</option>
+                                    <option value="ปัจจัยพื้นฐานนักเรียนยากจน">ปัจจัยพื้นฐานนักเรียนยากจน</option>
+                                    <option value="อาหารกลางวัน">อาหารกลางวัน</option>
+                                    <option value="รายได้สถานศึกษา">รายได้สถานศึกษา</option>
+                                    <option value="กสศ.">กสศ.</option>
+                                    <option value="ภาษี">ภาษี</option>
+                                    <option value="ดอกเบี้ย">ดอกเบี้ย</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">ประเภทรายการ <span class="text-danger">*</span></label>
+                            <select class="form-select" id="transactionType" required>
+                                <option value="">เลือกประเภทรายการ</option>
+                                <option value="รับ">รับ</option>
+                                <option value="จ่าย">จ่าย</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">บัญชี <span class="text-danger">*</span></label>
+                            <select class="form-select" id="accountType" required>
+                                <option value="">เลือกบัญชี</option>
+                                <option value="เงินอุดหนุน">เงินอุดหนุน</option>
+                                <option value="อาหารกลางวัน">อาหารกลางวัน</option>
+                                <option value="รายได้สถานศึกษา">รายได้สถานศึกษา</option>
+                                <option value="กสศ.">กสศ.</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">รายการ <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="description" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">จำนวนเงิน <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="amount" step="0.01" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary-custom" onclick="saveRecord()">บันทึก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Record Modal -->
+    <div class="modal fade modal-custom" id="viewModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">รายละเอียดรายการ</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body" id="viewModalBody">
-                    <!-- Details will be loaded here -->
+                    <!-- Details will be populated here -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
@@ -514,15 +406,52 @@
         </div>
     </div>
 
+    <!-- Export Date Range Modal -->
+    <div class="modal fade modal-custom" id="exportModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">เลือกช่วงวันที่สำหรับ Export</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">วันที่เริ่มต้น <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="exportStartDate" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">วันที่สิ้นสุด <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="exportEndDate" required>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        ระบบจะส่งออกข้อมูลตามช่วงวันที่ที่เลือก พร้อมทั้งแยก Sheet ตามประเภทเงิน
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-success" onclick="confirmExport()">
+                        <i class="fas fa-file-excel me-1"></i>ส่งออกข้อมูล
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
     <!-- Firebase SDK -->
     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getDatabase, ref, push, set, get, remove, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, push, set, get, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCCVnXN5j7GhQEMRFLk7UJ2UsxAouPmB6w",
             authDomain: "listpayment-fe19e.firebaseapp.com",
@@ -534,390 +463,370 @@
             measurementId: "G-WJXTV70VWQ"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
         // Global variables
-        let allRecords = [];
+        let currentRecords = [];
         let filteredRecords = [];
         let currentPage = 1;
-        const recordsPerPage = 20;
+        let recordsPerPage = 20;
+        let editingRecordId = null;
 
-        // Make functions globally available
-        window.database = database;
-        window.ref = ref;
-        window.push = push;
-        window.set = set;
-        window.get = get;
-        window.remove = remove;
-        window.onValue = onValue;
+        // Money type colors
+        const moneyTypeColors = {
+            'ค่าจัดการเรียนการสอน': 'bg-primary',
+            'ค่าหนังสือเรียน': 'bg-success',
+            'ค่าอุปกรณ์การเรียน': 'bg-info',
+            'ค่าเครื่องแบบนักเรียน': 'bg-warning',
+            'ค่ากิจกรรมพัฒนาคุณภาพผู้เรียน': 'bg-danger',
+            'ปัจจัยพื้นฐานนักเรียนยากจน': 'bg-secondary',
+            'อาหารกลางวัน': 'bg-dark',
+            'รายได้สถานศึกษา': 'bg-light text-dark',
+            'กสศ.': 'bg-primary',
+            'ภาษี': 'bg-success',
+            'ดอกเบี้ย': 'bg-info'
+        };
 
-        // Load data on page load
-        loadData();
-
-        function loadData() {
-            showLoading();
-            const recordsRef = ref(database, 'records');
-            
-            onValue(recordsRef, (snapshot) => {
-                allRecords = [];
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    Object.keys(data).forEach(key => {
-                        allRecords.push({
-                            id: key,
-                            ...data[key]
-                        });
-                    });
-                }
-                
-                // Sort by date (newest first)
-                allRecords.sort((a, b) => new Date(b.recordDate) - new Date(a.recordDate));
-                
-                filteredRecords = [...allRecords];
-                currentPage = 1;
-                
-                // Update global references
-                updateGlobalReferences();
-                
-                displayData();
-                hideLoading();
-            });
-        }
-
-        function displayData() {
-            const tbody = document.getElementById('dataTableBody');
-            const startIndex = (currentPage - 1) * recordsPerPage;
-            const endIndex = startIndex + recordsPerPage;
-            const pageRecords = filteredRecords.slice(startIndex, endIndex);
-
-            tbody.innerHTML = '';
-
-            if (pageRecords.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="9" class="text-center py-4">ไม่พบข้อมูล</td></tr>';
-                return;
-            }
-
-            pageRecords.forEach((record, index) => {
-                const row = document.createElement('tr');
-                const globalIndex = startIndex + index + 1;
-                
-                row.innerHTML = `
-                    <td>${globalIndex}</td>
-                    <td><span class="badge bg-primary">${record.documentType}</span></td>
-                    <td>${record.budgetYear}</td>
-                    <td>${getMoneyTypeTag(record.moneyType)}</td>
-                    <td>${record.documentNumber}</td>
-                    <td>${record.description}</td>
-                    <td class="${record.type === 'income' ? 'amount-income' : 'amount-expense'}">
-                        ${record.type === 'income' ? '+' : '-'}${formatNumber(record.amount)} บาท
-                    </td>
-                    <td>${formatDate(record.recordDate)}</td>
-                    <td>
-                        <button class="btn btn-info btn-sm me-1" onclick="viewRecord('${record.id}')" title="ดูรายละเอียด" style="padding: 4px 8px;">
-                            <img src="https://lh3.googleusercontent.com/d/13qxaLbH33ivpbfIfrBmylnxINq1oOLFl" width="14" height="14" alt="ดู">
-                        </button>
-                        <button class="btn btn-warning btn-sm me-1" onclick="editRecord('${record.id}')" title="แก้ไข" style="padding: 4px 8px;">
-                            <img src="https://lh3.googleusercontent.com/d/1J08fhv8_Lqe1O1YY4nQTSl-0WKNo3FnU" width="14" height="14" alt="แก้ไข">
-                        </button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteRecord('${record.id}')" title="ลบ" style="padding: 4px 8px;">
-                            <img src="https://lh3.googleusercontent.com/d/1CE-tDsLaAhEd3TGz877i7N3AIiYRjDlq" width="14" height="14" alt="ลบ">
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            updatePagination();
-        }
-
-        function updatePagination() {
-            const totalPages = Math.ceil(filteredRecords.length / recordsPerPage);
-            const pagination = document.getElementById('pagination');
-            
-            pagination.innerHTML = '';
-
-            if (totalPages <= 1) return;
-
-            // Previous button
-            const prevLi = document.createElement('li');
-            prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
-            prevLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage - 1})">ก่อนหน้า</a>`;
-            pagination.appendChild(prevLi);
-
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
-                    const li = document.createElement('li');
-                    li.className = `page-item ${i === currentPage ? 'active' : ''}`;
-                    li.innerHTML = `<a class="page-link" href="#" onclick="changePage(${i})">${i}</a>`;
-                    pagination.appendChild(li);
-                } else if (i === currentPage - 3 || i === currentPage + 3) {
-                    const li = document.createElement('li');
-                    li.className = 'page-item disabled';
-                    li.innerHTML = '<span class="page-link">...</span>';
-                    pagination.appendChild(li);
-                }
-            }
-
-            // Next button
-            const nextLi = document.createElement('li');
-            nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
-            nextLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage + 1})">ถัดไป</a>`;
-            pagination.appendChild(nextLi);
-        }
-
-        function getMoneyTypeTag(type) {
-            const typeMap = {
-                'ค่าจัดการเรียนการสอน': 'type-teaching',
-                'ค่าหนังสือเรียน': 'type-books',
-                'ค่าอุปกรณ์การเรียน': 'type-equipment',
-                'ค่าเครื่องแบบนักเรียน': 'type-uniform',
-                'ค่ากิจกรรมพัฒนาคุณภาพผู้เรียน': 'type-activity',
-                'ปัจจัยพื้นฐานนักเรียนยากจน': 'type-basic',
-                'อาหารกลางวัน': 'type-lunch',
-                'รายได้สถานศึกษา': 'type-income',
-                'กสศ.': 'type-fund',
-                'ภาษี': 'type-tax',
-                'ดอกเบี้ย': 'type-interest'
-            };
-            
-            const className = typeMap[type] || 'type-teaching';
-            return `<span class="money-type-tag ${className}">${type}</span>`;
-        }
-
-        function formatNumber(num) {
-            return parseFloat(num).toLocaleString('th-TH', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-        }
-
-        function formatDate(dateStr) {
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('th-TH', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-            });
-        }
-
+        // Show loading overlay
         function showLoading() {
             document.getElementById('loadingOverlay').style.display = 'flex';
         }
 
+        // Hide loading overlay
         function hideLoading() {
             document.getElementById('loadingOverlay').style.display = 'none';
         }
 
-        // Make functions and variables globally available
-        window.loadData = loadData;
-        window.displayData = displayData;
-        window.showLoading = showLoading;
-        window.hideLoading = hideLoading;
-        window.allRecords = allRecords;
-        window.filteredRecords = filteredRecords;
-        window.currentPage = currentPage;
-        window.recordsPerPage = recordsPerPage;
-        
-        // Update global references when data changes
-        function updateGlobalReferences() {
-            window.allRecords = allRecords;
-            window.filteredRecords = filteredRecords;
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('th-TH', {
+                style: 'currency',
+                currency: 'THB'
+            }).format(amount);
         }
-    </script>
 
-    <script>
-        // Global functions for UI interactions
-        window.filterData = function() {
-            const month = document.getElementById('monthFilter').value;
-            const year = document.getElementById('yearFilter').value;
-            
-            window.filteredRecords = window.allRecords.filter(record => {
-                const recordDate = new Date(record.recordDate);
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('th-TH', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Load records from Firebase
+        async function loadRecords() {
+            showLoading();
+            try {
+                const recordsRef = ref(database, 'financial_records');
+                const snapshot = await get(recordsRef);
+                
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    currentRecords = Object.keys(data).map(key => ({
+                        id: key,
+                        ...data[key]
+                    }));
+                    
+                    // Sort by created date (newest first), then by date
+                    currentRecords.sort((a, b) => {
+                        const aCreated = new Date(a.createdAt || a.date);
+                        const bCreated = new Date(b.createdAt || b.date);
+                        return bCreated - aCreated;
+                    });
+                } else {
+                    currentRecords = [];
+                }
+                
+                applyFilters();
+            } catch (error) {
+                console.error('Error loading records:', error);
+                Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถโหลดข้อมูลได้', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const monthFilter = document.getElementById('monthFilter').value;
+            const yearFilter = document.getElementById('yearFilter').value;
+            const moneyTypeFilter = document.getElementById('moneyTypeFilter').value;
+
+            filteredRecords = currentRecords.filter(record => {
+                const recordDate = new Date(record.date);
                 const recordMonth = recordDate.getMonth() + 1;
                 const recordYear = recordDate.getFullYear();
-                
-                let matchMonth = !month || recordMonth == month;
-                let matchYear = !year || recordYear == year;
-                
-                return matchMonth && matchYear;
+
+                let matchMonth = !monthFilter || recordMonth == monthFilter;
+                let matchYear = !yearFilter || recordYear == yearFilter;
+                let matchMoneyType = !moneyTypeFilter || record.moneyType === moneyTypeFilter;
+
+                return matchMonth && matchYear && matchMoneyType;
             });
-            
-            window.currentPage = 1;
-            window.displayData();
+
+            currentPage = 1;
+            displayRecords();
+            displayPagination();
         }
 
-        window.changePage = function(page) {
-            const totalPages = Math.ceil(window.filteredRecords.length / window.recordsPerPage);
-            if (page >= 1 && page <= totalPages) {
-                window.currentPage = page;
-                window.displayData();
-            }
-        }
+        // Display records in table
+        function displayRecords() {
+            const tbody = document.getElementById('recordsTable');
+            const startIndex = (currentPage - 1) * recordsPerPage;
+            const endIndex = startIndex + recordsPerPage;
+            const recordsToShow = filteredRecords.slice(startIndex, endIndex);
 
-        window.openAddModal = function(type) {
-            document.getElementById('recordId').value = '';
-            document.getElementById('recordType').value = type;
-            document.getElementById('modalTitle').textContent = type === 'income' ? 'เพิ่มรายการรับ' : 'เพิ่มรายการเบิกจ่าย';
-            
-            // Reset form
-            document.getElementById('dataForm').reset();
-            document.getElementById('recordDate').value = new Date().toISOString().split('T')[0];
-            
-            const modal = new bootstrap.Modal(document.getElementById('addEditModal'));
-            modal.show();
-        }
-
-        window.editRecord = function(id) {
-            const record = allRecords.find(r => r.id === id);
-            if (!record) {
-                console.log('Record not found for edit:', id);
+            if (recordsToShow.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">ไม่พบข้อมูล</td></tr>';
                 return;
             }
+
+            tbody.innerHTML = recordsToShow.map(record => `
+                <tr>
+                    <td>${formatDate(record.date)}</td>
+                    <td>${record.documentType}</td>
+                    <td>${record.documentNumber}</td>
+                    <td>${record.budgetYear}</td>
+                    <td><span class="badge badge-money-type ${moneyTypeColors[record.moneyType] || 'bg-secondary'}">${record.moneyType}</span></td>
+                    <td><span class="badge ${record.transactionType === 'รับ' ? 'bg-success' : 'bg-danger'}">${record.transactionType || 'ไม่ระบุ'}</span></td>
+                    <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${record.description}">${record.description}</td>
+                    <td class="text-end">${formatCurrency(record.amount)}</td>
+                    <td>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button class="btn btn-outline-info btn-sm-mobile" onclick="viewRecord('${record.id}')" title="ดูรายละเอียด">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-outline-warning btn-sm-mobile" onclick="editRecord('${record.id}')" title="แก้ไข">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm-mobile" onclick="deleteRecord('${record.id}')" title="ลบ">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Display pagination
+        function displayPagination() {
+            const totalPages = Math.ceil(filteredRecords.length / recordsPerPage);
+            const pagination = document.getElementById('pagination');
+
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = '';
+
+            // First page
+            paginationHTML += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(1)">หน้าแรก</a>
+                </li>
+            `;
+
+            // Previous page
+            paginationHTML += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">ก่อนหน้า</a>
+                </li>
+            `;
+
+            // Page numbers
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, currentPage + 2);
+
+            if (startPage > 1) {
+                paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHTML += `
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                    </li>
+                `;
+            }
+
+            if (endPage < totalPages) {
+                paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            }
+
+            // Next page
+            paginationHTML += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">ถัดไป</a>
+                </li>
+            `;
+
+            // Last page
+            paginationHTML += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${totalPages})">หน้าสุดท้าย</a>
+                </li>
+            `;
+
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Change page
+        window.changePage = function(page) {
+            currentPage = page;
+            displayRecords();
+            displayPagination();
+        };
+
+        // Add new record
+        window.addRecord = function() {
+            editingRecordId = null;
+            document.getElementById('modalTitle').textContent = 'เพิ่มรายการใหม่';
+            document.getElementById('recordForm').reset();
+            document.getElementById('customDocumentType').style.display = 'none';
+            document.getElementById('accountType').value = '';
+            new bootstrap.Modal(document.getElementById('recordModal')).show();
+        };
+
+        // Edit record
+        window.editRecord = function(recordId) {
+            const record = currentRecords.find(r => r.id === recordId);
+            if (!record) return;
+
+            editingRecordId = recordId;
+            document.getElementById('modalTitle').textContent = 'แก้ไขรายการ';
             
-            document.getElementById('recordId').value = id;
-            document.getElementById('recordType').value = record.type;
-            document.getElementById('modalTitle').textContent = record.type === 'income' ? 'แก้ไขรายการรับ' : 'แก้ไขรายการเบิกจ่าย';
-            
-            // Fill form with existing data
+            document.getElementById('recordDate').value = record.date;
             document.getElementById('documentType').value = record.documentType;
+            document.getElementById('documentNumber').value = record.documentNumber;
             document.getElementById('budgetYear').value = record.budgetYear;
             document.getElementById('moneyType').value = record.moneyType;
-            document.getElementById('documentNumber').value = record.documentNumber;
+            document.getElementById('transactionType').value = record.transactionType || '';
+            document.getElementById('accountType').value = record.accountType || '';
             document.getElementById('description').value = record.description;
             document.getElementById('amount').value = record.amount;
-            document.getElementById('recordDate').value = record.recordDate;
-            
-            const modal = new bootstrap.Modal(document.getElementById('addEditModal'));
-            modal.show();
-        }
 
-        window.viewRecord = function(id) {
-            const record = allRecords.find(r => r.id === id);
-            if (!record) {
-                console.log('Record not found:', id);
-                return;
+            if (record.documentType === 'อื่นๆ') {
+                document.getElementById('customDocumentType').style.display = 'block';
+                document.getElementById('customDocumentType').value = record.customDocumentType || '';
             }
-            
+
+            new bootstrap.Modal(document.getElementById('recordModal')).show();
+        };
+
+        // View record details
+        window.viewRecord = function(recordId) {
+            const record = currentRecords.find(r => r.id === recordId);
+            if (!record) return;
+
             const modalBody = document.getElementById('viewModalBody');
             modalBody.innerHTML = `
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <strong>ประเภทเอกสาร:</strong><br>
-                        <span class="badge bg-primary">${record.documentType}</span>
+                        <strong>วันที่:</strong><br>
+                        ${formatDate(record.date)}
                     </div>
                     <div class="col-md-6 mb-3">
-                        <strong>ปีงบประมาณ:</strong><br>
-                        ${record.budgetYear}
-                    </div>
-                    <div class="col-12 mb-3">
-                        <strong>ประเภทเงิน:</strong><br>
-                        ${getMoneyTypeTag(record.moneyType)}
+                        <strong>ประเภทเอกสาร:</strong><br>
+                        ${record.documentType}${record.customDocumentType ? ` (${record.customDocumentType})` : ''}
                     </div>
                     <div class="col-md-6 mb-3">
                         <strong>เลขที่เอกสาร:</strong><br>
                         ${record.documentNumber}
                     </div>
                     <div class="col-md-6 mb-3">
-                        <strong>วันที่:</strong><br>
-                        ${formatDate(record.recordDate)}
+                        <strong>ปีงบประมาณ:</strong><br>
+                        ${record.budgetYear}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <strong>ประเภทเงิน:</strong><br>
+                        <span class="badge badge-money-type ${moneyTypeColors[record.moneyType] || 'bg-secondary'}">${record.moneyType}</span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <strong>ประเภทรายการ:</strong><br>
+                        <span class="badge ${record.transactionType === 'รับ' ? 'bg-success' : 'bg-danger'}">${record.transactionType || 'ไม่ระบุ'}</span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <strong>บัญชี:</strong><br>
+                        ${record.accountType || 'ไม่ระบุ'}
                     </div>
                     <div class="col-12 mb-3">
                         <strong>รายการ:</strong><br>
-                        ${record.description}
+                        <div class="p-2 bg-light rounded">${record.description}</div>
                     </div>
                     <div class="col-12 mb-3">
                         <strong>จำนวนเงิน:</strong><br>
-                        <span class="${record.type === 'income' ? 'amount-income' : 'amount-expense'} fs-5">
-                            ${record.type === 'income' ? '+' : '-'}${formatNumber(record.amount)} บาท
-                        </span>
-                    </div>
-                    <div class="col-12">
-                        <strong>ประเภท:</strong><br>
-                        <span class="badge ${record.type === 'income' ? 'bg-success' : 'bg-danger'}">
-                            ${record.type === 'income' ? 'รายการรับ' : 'รายการเบิกจ่าย'}
-                        </span>
+                        <h4 class="text-success">${formatCurrency(record.amount)}</h4>
                     </div>
                 </div>
             `;
-            
-            const modal = new bootstrap.Modal(document.getElementById('viewModal'));
-            modal.show();
-        }
 
+            new bootstrap.Modal(document.getElementById('viewModal')).show();
+        };
+
+        // Save record
         window.saveRecord = function() {
-            const form = document.getElementById('dataForm');
+            const form = document.getElementById('recordForm');
             if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
             }
-            
-            window.showLoading();
-            
+
             const recordData = {
+                date: document.getElementById('recordDate').value,
                 documentType: document.getElementById('documentType').value,
+                documentNumber: document.getElementById('documentNumber').value,
                 budgetYear: document.getElementById('budgetYear').value,
                 moneyType: document.getElementById('moneyType').value,
-                documentNumber: document.getElementById('documentNumber').value,
+                transactionType: document.getElementById('transactionType').value,
+                accountType: document.getElementById('accountType').value,
                 description: document.getElementById('description').value,
                 amount: parseFloat(document.getElementById('amount').value),
-                recordDate: document.getElementById('recordDate').value,
-                type: document.getElementById('recordType').value,
                 createdAt: new Date().toISOString()
             };
-            
-            const recordId = document.getElementById('recordId').value;
-            
-            if (recordId) {
+
+            if (recordData.documentType === 'อื่นๆ') {
+                recordData.customDocumentType = document.getElementById('customDocumentType').value;
+            }
+
+            showLoading();
+
+            if (editingRecordId) {
                 // Update existing record
-                window.set(window.ref(window.database, `records/${recordId}`), recordData)
-                    .then(() => {
-                        window.hideLoading();
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'สำเร็จ!',
-                            text: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-                        bootstrap.Modal.getInstance(document.getElementById('addEditModal')).hide();
-                    })
-                    .catch((error) => {
-                        window.hideLoading();
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'เกิดข้อผิดพลาด!',
-                            text: 'ไม่สามารถแก้ไขข้อมูลได้'
-                        });
-                    });
+                const recordRef = ref(database, `financial_records/${editingRecordId}`);
+                recordData.updatedAt = new Date().toISOString();
+                
+                set(recordRef, recordData).then(() => {
+                    hideLoading();
+                    bootstrap.Modal.getInstance(document.getElementById('recordModal')).hide();
+                    Swal.fire('สำเร็จ', 'แก้ไขรายการเรียบร้อยแล้ว', 'success');
+                    loadRecords();
+                }).catch(error => {
+                    hideLoading();
+                    console.error('Error updating record:', error);
+                    Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถแก้ไขรายการได้', 'error');
+                });
             } else {
                 // Add new record
-                window.push(window.ref(window.database, 'records'), recordData)
-                    .then(() => {
-                        window.hideLoading();
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'สำเร็จ!',
-                            text: 'บันทึกข้อมูลเรียบร้อยแล้ว',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-                        bootstrap.Modal.getInstance(document.getElementById('addEditModal')).hide();
-                    })
-                    .catch((error) => {
-                        window.hideLoading();
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'เกิดข้อผิดพลาด!',
-                            text: 'ไม่สามารถบันทึกข้อมูลได้'
-                        });
-                    });
+                const recordsRef = ref(database, 'financial_records');
+                push(recordsRef, recordData).then(() => {
+                    hideLoading();
+                    bootstrap.Modal.getInstance(document.getElementById('recordModal')).hide();
+                    Swal.fire('สำเร็จ', 'เพิ่มรายการเรียบร้อยแล้ว', 'success');
+                    loadRecords();
+                }).catch(error => {
+                    hideLoading();
+                    console.error('Error adding record:', error);
+                    Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถเพิ่มรายการได้', 'error');
+                });
             }
-        }
+        };
 
-        window.deleteRecord = function(id) {
+        // Delete record
+        window.deleteRecord = function(recordId) {
             Swal.fire({
                 title: 'ยืนยันการลบ',
                 text: 'คุณต้องการลบรายการนี้หรือไม่?',
@@ -929,145 +838,338 @@
                 cancelButtonText: 'ยกเลิก'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.showLoading();
-                    window.remove(window.ref(window.database, `records/${id}`))
-                        .then(() => {
-                            window.hideLoading();
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'ลบเรียบร้อย!',
-                                text: 'รายการถูกลบแล้ว',
-                                timer: 2000,
-                                showConfirmButton: false
-                            });
-                        })
-                        .catch((error) => {
-                            window.hideLoading();
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'เกิดข้อผิดพลาด!',
-                                text: 'ไม่สามารถลบรายการได้'
-                            });
-                        });
+                    showLoading();
+                    const recordRef = ref(database, `financial_records/${recordId}`);
+                    remove(recordRef).then(() => {
+                        hideLoading();
+                        Swal.fire('ลบแล้ว', 'รายการถูกลบเรียบร้อยแล้ว', 'success');
+                        loadRecords();
+                    }).catch(error => {
+                        hideLoading();
+                        console.error('Error deleting record:', error);
+                        Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถลบรายการได้', 'error');
+                    });
                 }
             });
-        }
+        };
 
-        // Export to Excel function
-        window.exportToExcel = function() {
-            const exportMonth = document.getElementById('exportMonthFilter').value;
-            
-            if (!exportMonth) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'กรุณาเลือกเดือน',
-                    text: 'กรุณาเลือกเดือนที่ต้องการ Export ข้อมูล'
-                });
-                return;
+        // Event listeners
+        document.getElementById('monthFilter').addEventListener('change', applyFilters);
+        document.getElementById('yearFilter').addEventListener('change', applyFilters);
+        document.getElementById('moneyTypeFilter').addEventListener('change', applyFilters);
+
+        document.getElementById('documentType').addEventListener('change', function() {
+            const customField = document.getElementById('customDocumentType');
+            if (this.value === 'อื่นๆ') {
+                customField.style.display = 'block';
+                customField.required = true;
+            } else {
+                customField.style.display = 'none';
+                customField.required = false;
+                customField.value = '';
             }
-            
-            // Filter records by selected month
-            const exportData = allRecords.filter(record => {
-                const recordDate = new Date(record.recordDate);
-                const recordMonth = recordDate.getMonth() + 1;
-                console.log('Record date:', record.recordDate, 'Month:', recordMonth, 'Export month:', exportMonth);
-                return recordMonth == exportMonth;
-            });
-            
-            console.log('Export data found:', exportData.length, 'records');
-            
-            if (exportData.length === 0) {
-                Swal.fire({
-                    icon: 'info',
-                    title: 'ไม่พบข้อมูล',
-                    text: 'ไม่พบข้อมูลในเดือนที่เลือก'
-                });
-                return;
+        });
+
+        // Handle Enter key in modal
+        document.getElementById('recordModal').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                saveRecord();
             }
-            
-            // Prepare data for Excel
-            const excelData = exportData.map((record, index) => ({
-                'ลำดับ': index + 1,
-                'ประเภทเอกสาร': record.documentType,
-                'ปีงบประมาณ': record.budgetYear,
-                'ประเภทเงิน': record.moneyType,
-                'เลขที่เอกสาร': record.documentNumber,
-                'รายการ': record.description,
-                'จำนวนเงิน': record.amount,
-                'ประเภท': record.type === 'income' ? 'รายการรับ' : 'รายการเบิกจ่าย',
-                'วันที่': record.recordDate
-            }));
-            
-            // Create workbook and worksheet
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.json_to_sheet(excelData);
-            
-            // Add worksheet to workbook
-            const monthNames = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 
-                              'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
-            const sheetName = `รายการเบิกจ่าย_${monthNames[exportMonth]}`;
-            XLSX.utils.book_append_sheet(wb, ws, sheetName);
-            
-            // Generate filename
-            const filename = `รายการเบิกจ่าย_${monthNames[exportMonth]}_${new Date().getFullYear()}.xlsx`;
-            
-            // Save file
-            XLSX.writeFile(wb, filename);
-            
-            Swal.fire({
-                icon: 'success',
-                title: 'Export สำเร็จ!',
-                text: `ไฟล์ ${filename} ถูกดาวน์โหลดแล้ว`,
-                timer: 3000,
-                showConfirmButton: false
-            });
-        }
-
-        // Helper functions for modal display
-        function getMoneyTypeTag(type) {
-            const typeMap = {
-                'ค่าจัดการเรียนการสอน': 'type-teaching',
-                'ค่าหนังสือเรียน': 'type-books',
-                'ค่าอุปกรณ์การเรียน': 'type-equipment',
-                'ค่าเครื่องแบบนักเรียน': 'type-uniform',
-                'ค่ากิจกรรมพัฒนาคุณภาพผู้เรียน': 'type-activity',
-                'ปัจจัยพื้นฐานนักเรียนยากจน': 'type-basic',
-                'อาหารกลางวัน': 'type-lunch',
-                'รายได้สถานศึกษา': 'type-income',
-                'กสศ.': 'type-fund',
-                'ภาษี': 'type-tax',
-                'ดอกเบี้ย': 'type-interest'
-            };
-            
-            const className = typeMap[type] || 'type-teaching';
-            return `<span class="money-type-tag ${className}">${type}</span>`;
-        }
-
-        function formatNumber(num) {
-            return parseFloat(num).toLocaleString('th-TH', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-        }
-
-        function formatDate(dateStr) {
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('th-TH', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-            });
-        }
+        });
 
         // Close modal when clicking outside
-        document.addEventListener('click', function(event) {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                if (event.target === modal) {
-                    bootstrap.Modal.getInstance(modal)?.hide();
-                }
-            });
+        document.getElementById('recordModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                bootstrap.Modal.getInstance(this).hide();
+            }
         });
+
+        document.getElementById('viewModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                bootstrap.Modal.getInstance(this).hide();
+            }
+        });
+
+        // Show export modal
+        window.exportToExcel = function() {
+            if (currentRecords.length === 0) {
+                Swal.fire('ไม่มีข้อมูล', 'ไม่มีข้อมูลสำหรับส่งออก', 'warning');
+                return;
+            }
+
+            // Set default date range (current month)
+            const now = new Date();
+            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+            const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            
+            document.getElementById('exportStartDate').value = firstDay.toISOString().split('T')[0];
+            document.getElementById('exportEndDate').value = lastDay.toISOString().split('T')[0];
+
+            new bootstrap.Modal(document.getElementById('exportModal')).show();
+        };
+
+        // Confirm export with date range
+        window.confirmExport = function() {
+            const startDate = document.getElementById('exportStartDate').value;
+            const endDate = document.getElementById('exportEndDate').value;
+
+            if (!startDate || !endDate) {
+                Swal.fire('กรุณาเลือกวันที่', 'กรุณาเลือกวันที่เริ่มต้นและสิ้นสุด', 'warning');
+                return;
+            }
+
+            if (new Date(startDate) > new Date(endDate)) {
+                Swal.fire('วันที่ไม่ถูกต้อง', 'วันที่เริ่มต้นต้องไม่เกินวันที่สิ้นสุด', 'warning');
+                return;
+            }
+
+            // Filter records by date range
+            const exportRecords = currentRecords.filter(record => {
+                const recordDate = new Date(record.date);
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+                return recordDate >= start && recordDate <= end;
+            });
+
+            if (exportRecords.length === 0) {
+                Swal.fire('ไม่มีข้อมูล', 'ไม่มีข้อมูลในช่วงวันที่ที่เลือก', 'warning');
+                return;
+            }
+
+            // Close modal and start export
+            bootstrap.Modal.getInstance(document.getElementById('exportModal')).hide();
+            performExport(exportRecords, startDate, endDate);
+        };
+
+        // Perform actual export
+        function performExport(exportRecords, startDate, endDate) {
+            showLoading();
+
+            try {
+                // Create workbook
+                const wb = XLSX.utils.book_new();
+
+                // Prepare data for all records sheet
+                const allRecordsData = exportRecords.map(record => ({
+                    'วันที่': formatDateForExcel(record.date),
+                    'ประเภทเอกสาร': record.documentType + (record.customDocumentType ? ` (${record.customDocumentType})` : ''),
+                    'เลขที่เอกสาร': record.documentNumber,
+                    'ปีงบประมาณ': record.budgetYear,
+                    'ประเภทเงิน': record.moneyType,
+                    'ประเภทรายการ': record.transactionType || 'ไม่ระบุ',
+                    'รายการ': record.description,
+                    'จำนวนเงิน': record.amount
+                }));
+
+                // Create all records sheet
+                const allRecordsWS = XLSX.utils.json_to_sheet(allRecordsData);
+                
+                // Set column widths for all records sheet
+                allRecordsWS['!cols'] = [
+                    { width: 15 }, // วันที่
+                    { width: 15 }, // ประเภทเอกสาร
+                    { width: 15 }, // เลขที่เอกสาร
+                    { width: 12 }, // ปีงบประมาณ
+                    { width: 25 }, // ประเภทเงิน
+                    { width: 15 }, // ประเภทรายการ
+                    { width: 40 }, // รายการ
+                    { width: 15 }  // จำนวนเงิน
+                ];
+
+                XLSX.utils.book_append_sheet(wb, allRecordsWS, 'รายการทั้งหมด');
+
+                // Group records by money type
+                const recordsByMoneyType = {};
+                exportRecords.forEach(record => {
+                    if (!recordsByMoneyType[record.moneyType]) {
+                        recordsByMoneyType[record.moneyType] = [];
+                    }
+                    recordsByMoneyType[record.moneyType].push(record);
+                });
+
+                // Create sheets for each money type
+                Object.keys(recordsByMoneyType).forEach(moneyType => {
+                    const records = recordsByMoneyType[moneyType];
+                    const sheetData = records.map(record => ({
+                        'วันที่': formatDateForExcel(record.date),
+                        'ประเภทเอกสาร': record.documentType + (record.customDocumentType ? ` (${record.customDocumentType})` : ''),
+                        'เลขที่เอกสาร': record.documentNumber,
+                        'ปีงบประมาณ': record.budgetYear,
+                        'ประเภทรายการ': record.transactionType || 'ไม่ระบุ',
+                        'รายการ': record.description,
+                        'จำนวนเงิน': record.amount
+                    }));
+
+                    // Add summary row
+                    const totalAmount = records.reduce((sum, record) => sum + record.amount, 0);
+                    const incomeAmount = records.filter(r => r.transactionType === 'รับ').reduce((sum, record) => sum + record.amount, 0);
+                    const expenseAmount = records.filter(r => r.transactionType === 'จ่าย').reduce((sum, record) => sum + record.amount, 0);
+
+                    sheetData.push({});
+                    sheetData.push({
+                        'วันที่': 'สรุป',
+                        'ประเภทเอกสาร': '',
+                        'เลขที่เอกสาร': '',
+                        'ปีงบประมาณ': '',
+                        'ประเภทรายการ': 'รวมรับ',
+                        'รายการ': '',
+                        'จำนวนเงิน': incomeAmount
+                    });
+                    sheetData.push({
+                        'วันที่': '',
+                        'ประเภทเอกสาร': '',
+                        'เลขที่เอกสาร': '',
+                        'ปีงบประมาณ': '',
+                        'ประเภทรายการ': 'รวมจ่าย',
+                        'รายการ': '',
+                        'จำนวนเงิน': expenseAmount
+                    });
+                    sheetData.push({
+                        'วันที่': '',
+                        'ประเภทเอกสาร': '',
+                        'เลขที่เอกสาร': '',
+                        'ปีงบประมาณ': '',
+                        'ประเภทรายการ': 'คงเหลือ',
+                        'รายการ': '',
+                        'จำนวนเงิน': incomeAmount - expenseAmount
+                    });
+
+                    const ws = XLSX.utils.json_to_sheet(sheetData);
+                    
+                    // Set column widths
+                    ws['!cols'] = [
+                        { width: 15 }, // วันที่
+                        { width: 15 }, // ประเภทเอกสาร
+                        { width: 15 }, // เลขที่เอกสาร
+                        { width: 12 }, // ปีงบประมาณ
+                        { width: 15 }, // ประเภทรายการ
+                        { width: 40 }, // รายการ
+                        { width: 15 }  // จำนวนเงิน
+                    ];
+
+                    // Truncate sheet name if too long (Excel limit is 31 characters)
+                    let sheetName = moneyType;
+                    if (sheetName.length > 31) {
+                        sheetName = sheetName.substring(0, 28) + '...';
+                    }
+
+                    XLSX.utils.book_append_sheet(wb, ws, sheetName);
+                });
+
+                // Group records by account type
+                const recordsByAccountType = {};
+                exportRecords.forEach(record => {
+                    const accountType = record.accountType || 'ไม่ระบุบัญชี';
+                    if (!recordsByAccountType[accountType]) {
+                        recordsByAccountType[accountType] = [];
+                    }
+                    recordsByAccountType[accountType].push(record);
+                });
+
+                // Create sheets for each account type
+                Object.keys(recordsByAccountType).forEach(accountType => {
+                    const records = recordsByAccountType[accountType];
+                    const sheetData = records.map(record => ({
+                        'วันที่': formatDateForExcel(record.date),
+                        'ประเภทเอกสาร': record.documentType + (record.customDocumentType ? ` (${record.customDocumentType})` : ''),
+                        'เลขที่เอกสาร': record.documentNumber,
+                        'ปีงบประมาณ': record.budgetYear,
+                        'ประเภทเงิน': record.moneyType,
+                        'ประเภทรายการ': record.transactionType || 'ไม่ระบุ',
+                        'รายการ': record.description,
+                        'จำนวนเงิน': record.amount
+                    }));
+
+                    // Add summary row
+                    const incomeAmount = records.filter(r => r.transactionType === 'รับ').reduce((sum, record) => sum + record.amount, 0);
+                    const expenseAmount = records.filter(r => r.transactionType === 'จ่าย').reduce((sum, record) => sum + record.amount, 0);
+
+                    sheetData.push({});
+                    sheetData.push({
+                        'วันที่': 'สรุป',
+                        'ประเภทเอกสาร': '',
+                        'เลขที่เอกสาร': '',
+                        'ปีงบประมาณ': '',
+                        'ประเภทเงิน': '',
+                        'ประเภทรายการ': 'รวมรับ',
+                        'รายการ': '',
+                        'จำนวนเงิน': incomeAmount
+                    });
+                    sheetData.push({
+                        'วันที่': '',
+                        'ประเภทเอกสาร': '',
+                        'เลขที่เอกสาร': '',
+                        'ปีงบประมาณ': '',
+                        'ประเภทเงิน': '',
+                        'ประเภทรายการ': 'รวมจ่าย',
+                        'รายการ': '',
+                        'จำนวนเงิน': expenseAmount
+                    });
+                    sheetData.push({
+                        'วันที่': '',
+                        'ประเภทเอกสาร': '',
+                        'เลขที่เอกสาร': '',
+                        'ปีงบประมาณ': '',
+                        'ประเภทเงิน': '',
+                        'ประเภทรายการ': 'คงเหลือ',
+                        'รายการ': '',
+                        'จำนวนเงิน': incomeAmount - expenseAmount
+                    });
+
+                    const ws = XLSX.utils.json_to_sheet(sheetData);
+                    
+                    // Set column widths
+                    ws['!cols'] = [
+                        { width: 15 }, // วันที่
+                        { width: 15 }, // ประเภทเอกสาร
+                        { width: 15 }, // เลขที่เอกสาร
+                        { width: 12 }, // ปีงบประมาณ
+                        { width: 25 }, // ประเภทเงิน
+                        { width: 15 }, // ประเภทรายการ
+                        { width: 40 }, // รายการ
+                        { width: 15 }  // จำนวนเงิน
+                    ];
+
+                    // Truncate sheet name if too long (Excel limit is 31 characters)
+                    let sheetName = `บัญชี_${accountType}`;
+                    if (sheetName.length > 31) {
+                        sheetName = sheetName.substring(0, 28) + '...';
+                    }
+
+                    XLSX.utils.book_append_sheet(wb, ws, sheetName);
+                });
+
+                // Generate filename with date range
+                const filename = `รายงานการเงิน_${formatDateForFilename(startDate)}_ถึง_${formatDateForFilename(endDate)}.xlsx`;
+
+                // Write and download file
+                XLSX.writeFile(wb, filename);
+
+                hideLoading();
+                Swal.fire('สำเร็จ', 'ส่งออกข้อมูลเรียบร้อยแล้ว', 'success');
+
+            } catch (error) {
+                hideLoading();
+                console.error('Error exporting to Excel:', error);
+                Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถส่งออกข้อมูลได้', 'error');
+            }
+        }
+
+        // Format date for Excel
+        function formatDateForExcel(dateString) {
+            const date = new Date(dateString);
+            return `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+        }
+
+        // Format date for filename
+        function formatDateForFilename(dateString) {
+            const date = new Date(dateString);
+            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+        }
+
+        // Initialize
+        loadRecords();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96974ce2b2f3798f',t:'MTc1NDIzOTY4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96bc44f600d57323',t:'MTc1NDYyNzMzMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
